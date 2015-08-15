@@ -48,19 +48,21 @@ public class PlayerEvents {
 	}
 
 	private Map<EntityPlayer, ArmorStatus[]> statuses = new HashMap<EntityPlayer, ArmorStatus[]>();
-	
+
 	@SubscribeEvent
 	public void onPlayerJoined(PlayerLoggedInEvent event) {
 		statuses.put(event.player, new ArmorStatus[4]);
-		
-		System.out.println("Joined player, put into array! Now stored: " + statuses.size());
+
+		System.out.println("Joined player, put into array! Now stored: "
+				+ statuses.size());
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerQuit(PlayerLoggedOutEvent event) {
 		statuses.remove(event.player);
-		
-		System.out.println("Player left, remove from array! Now stored: " + statuses.size());
+
+		System.out.println("Player left, remove from array! Now stored: "
+				+ statuses.size());
 	}
 
 	@SubscribeEvent
@@ -74,15 +76,16 @@ public class PlayerEvents {
 
 				for (int i = 0; i < items.length; ++i) {
 					ItemStack current = items[i];
-					
+
 					int damage = -1;
 					if (current != null) {
-						damage = current.getMaxDamage() - current.getItemDamage();
+						damage = current.getMaxDamage()
+								- current.getItemDamage();
 					}
-					
+
 					localStatuses[i] = new ArmorStatus(current, damage);
 				}
-				
+
 				statuses.put(player, localStatuses);
 
 				checkStatus(player);
@@ -92,33 +95,29 @@ public class PlayerEvents {
 
 	private void checkStatus(EntityPlayer player) {
 		ArmorStatus[] stats = statuses.get(player);
-		
+
 		for (int i = 0; i < stats.length; ++i) {
 			ArmorStatus status = stats[i];
-			
+
 			if (status.lastDamage != -1)
-				System.out.println("Armor with #" + i + " has " + status.lastDamage +" (player " + player.getDisplayName());
-			
+				System.out.println("Armor with #" + i + " has " + status.lastDamage + " (player " + player.getDisplayName());
+
 			if (status.getArmor() != null) {
 				ItemStack stack = status.getStack();
 				status.setLastDamage(stack.getMaxDamage() - stack.getItemDamage());
-			}
 
-			if (status.getArmor() == null && status.getLastDamage() == 0) {
-				System.err.println("BROKEN!!!!!!!!!!!!!!!!!!!!!!!!! ID " + i);
-				
-				if (i == 0) {
-					onFeetBroken(player, status.getArmor());
-				} else if (i == 1) {
-					onLegsBroken(player, status.getArmor());
-				} else if (i == 2) {
-					onBodyBroken(player, status.getArmor());
-				} else if (i == 3) {
-					onHelmetBroken(player, status.getArmor());
+				if (status.getLastDamage() == 0) {
+					if (i == 0) {
+						onFeetBroken(player, status.getArmor());
+					} else if (i == 1) {
+						onLegsBroken(player, status.getArmor());
+					} else if (i == 2) {
+						onBodyBroken(player, status.getArmor());
+					} else if (i == 3) {
+						onHelmetBroken(player, status.getArmor());
+					}
 				}
-			}
-
-			if (status.getArmor() == null) {
+			} else {
 				status.setLastDamage(-1);
 			}
 
