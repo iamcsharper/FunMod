@@ -99,9 +99,6 @@ public class PlayerEvents {
 		for (int i = 0; i < stats.length; ++i) {
 			ArmorStatus status = stats[i];
 
-			if (status.lastDamage != -1)
-				System.out.println("Armor with #" + i + " has " + status.lastDamage + " (player " + player.getDisplayName());
-
 			if (status.getArmor() != null) {
 				ItemStack stack = status.getStack();
 				status.setLastDamage(stack.getMaxDamage() - stack.getItemDamage());
