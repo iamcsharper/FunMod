@@ -1,0 +1,4 @@
+{
+  "shtany": {"category": "master", "sounds": [{"name": "shtany","stream": false}]},
+  "creeperPrimed": {"category": "master", "sounds": [{"name": "creeperPrimed","stream": false}]}
+}
